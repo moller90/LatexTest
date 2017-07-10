@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+
+\title{dRegAut afl 4}
+\author{Hanus Rindom 201303613}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Martin 6.2 (a)}
+In this exercise we will use the pumping lemma to show that L is not context free.
+
+$$ L= \{ a^i b^j c^k | i < j < k \} $$
+    
+    We let $ u = a^n b^{n+1} c^{n+2} $. Given this string and knowing a condition stating  $ |u| \geq n $. We define $ u $ as $ vwxyz $ such that $ |wxy| \leq n, |vx| > 0 $.\\
+    Because $ |wxy| \leq n $, there are five possible descriptions of $ uvwxy $, we number them 1 to 5:
+        
+\begin{enumerate}
+  \item wxy only consists of $ a $'s.
+  \item wxy only consists of $ b $'s.
+  \item wxy only consists of $ c $'s.
+  \item wxy consists of some $ a $'s followed by $ b $'s
+  \item wxy consists of some $ b $'s followed by $ c $'s.
+\end{enumerate}
+    
+    \input{cond.tex}
+    
+        Because $ |wxy| \leq n $, $wxy$ cannot contain both $a$'s and $c$'s.\\
+        For this language to be contexst free, all cases $ v w^m x y^m z$, for $ m \geq 0 $, have to be in the language.\\
+        
+        Case 1 and 2: If we let $m=2$ we will be adding an $ a $ to the string, thus making the
+        number of $a$'s be $n+1$ and therefore the string is not in the language.\\
+        It is the same with case 2 in which the number of $b$'s will be
+        equal to the number of $c$'s.
+        
+        Case 3: If $ m=0 $ the number of $c$'s will be less than or equal
+        the number of $b$'s.
+        
+        Case 4: If $ m=2 $ either the number of $ a $'s will be greater than the
+        number of $ b $'s or the number of $ b $'s will be greater than the number of
+        $ c $'s.
+        
+        Case 5: If $ m=0 $ either the number of $ b $ 's will be less than or equal
+        to number of $ a $'s or the number of $ a $'s will be less than or equal to
+        the number of $ b $'s.
+        
+        It is now shown that the language L is not context free.
+
+\end{document}

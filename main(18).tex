@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+
+\title{RegAut afl. 3}
+\author{Anders Kostending, 201303537}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Kommentarer}
+    Jeg brugte første $\Lambda$-eliminering til at fjerne alle lambda-transitionerne den givne i NFA. Derefter lavede jeg en transitions-tabel, som jeg brugte til at lave detaminiseringen fra NFA til min FA. 
+    
+
+\section*{NFA$^*$}
+    \input{NFAStar}
+    \begin{table}
+        \centering
+        \begin{tabular}{l|lll|ll}
+        \hline
+        q & $\delta(q,a)$   & $\delta(q,b)$ & $\delta(q,\Lambda)$ & $\delta^*(q,a)$     & $\delta^*(q,b)$   \\
+        \hline
+        1 & 2,3 & Ø & Ø      & 2,3   & Ø   \\
+        2 & 1   & Ø & Ø      & 1     & Ø   \\
+        3 & Ø   & 4 & Ø      & Ø     & 2,4 \\
+        4 & 4   & Ø & 2      & 1,2,3 & Ø   \\
+        \end{tabular}
+    \end{table}
+    
+\section*{FA}
+    \input{FA}
+
+\end{document}

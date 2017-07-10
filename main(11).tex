@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[bottom]{footmisc}
+
+\title{dRegAut afl 3}
+\author{Hanus Rindom}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section{Elimination $\Lambda$ transitions}
+We know it is possible to translate an non-deterministic finite automata with $\Lambda$ transactions to another NFA without $\Lambda$ transactions due to the theorem 3.17.\footnote{page 104-105 in "Introduction to Languages and the Theory of Computation"}
+
+We will now describe the NFA with an transitions diagram:
+
+\begin{table}[h]
+    \begin{tabular}{ c | c c c | c c }
+        q & $ \delta (q,a)  $ & $ \delta (q,b) $ & $ \delta (q, \Lambda ) $ & $ \delta ^{*} (q,a) $ & $ \delta ^{*} (q,b) $ \\
+            \hline
+        1 & {2,3} & Ø & Ø & {2,3} & Ø \\
+        2 & {1} & Ø & Ø & {1} & Ø \\
+        3 & Ø & {4} & Ø & Ø  & {2,4} \\
+        4 & {4} & Ø & {2} & {1,2,4} & Ø \\
+    \end{tabular}
+\caption{Eliminating $\Lambda$ table}
+\label{table:LambdaTable}
+\end{table}
+The first column on is the 4 states. Column 2 to 4 is the values of the transition function $ \delta $.\\
+The last two columns is the information to create an NFA without $ \lambda $ transitions. These will be our new $ \delta $ values.\\
+$ \delta^{*} (3,b) = \{ 2,4 \}  $ because we can go from 3 to 4 through an b transition and from 4 to 2 through an $ \Lambda $ transition.\\
+    
+    \input{NFA*}
+
+\section{Translate NFA to an FA}
+We know it is possible to eliminate non-deterministism in an NFA due to the theorem 3.18.\footnote{page 106 in "Introduction to Languages and the Theory of Computation"}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c c}
+    q & $ \delta (q,a) $ & $ \delta (q,b) $ \\
+        \hline
+    1 & 2,3 & Ø \\
+    2,3 & 1 & 2,4 \\
+    2,4 & 1,2,4 & Ø\\
+    1,2,4 & 1,2,3,4 & Ø \\
+    1,2,3,4 & 1,2,3,4 & 2,4 \\
+\end{tabular}
+\caption{New $ \delta $ values}
+\label{tab:FA-translation}
+\end{table}
+A translation from an NFA to an FA will require $ 2^Q $ states, which is unnessery to create because we only have to look at states reachable form the initial state, which is 1. From state 1 we look at reachable states, here the new state 2,3 for an a transition and Ø for an B transition, we now have the next state for which we can look for reachable states and so on.
+    \input{FA}
+
+\end{document}

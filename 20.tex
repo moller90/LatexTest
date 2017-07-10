@@ -1,0 +1,10 @@
+\begin{verbatim}
+> (run-byte-code-program_Magritte '(byte-code-program ((PUSH 6))))
+(literal 6)
+
+> (run-byte-code-program_Magritte '(byte-code-program ((PUSH 40) (PUSH 2) (ADD))))
+(plus (literal 40) (literal 2))
+
+> (run-byte-code-program_Magritte '(byte-code-program ((PUSH 7) (PUSH 6) (MUL))))
+(times (literal 7) (literal 6))
+\end{verbatim}

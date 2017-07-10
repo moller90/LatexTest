@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{microtype}
+\usepackage{todonotes}
+
+\title{dRegAut af 1 gen induktionsskridt}
+\author{Hanus Rindom}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Induction step part 1 (+)}
+    We want to prove $ Prefix(L(r_1+r_2))=L(r') $ where r is the regular expression $ r = r_1 + r_2 $ and $ r' = r'_1 + r'_2 $ where $ r'_1 \text{ and } r'_2 $ is given by the induction hypothesis.
+    $$ L(r'_1)=Prefix(L(r_1)) \text{ and } L(r'_2)=Prefix(L(r_2)) $$
+$ L(r') $ is pr definiton regular and therefore is r' also regular: 
+    $$ L(r')=Prefix(L(r_1)) \cup Prefix(L(r_2)) $$
+    \begin{equation*}
+        \begin{split}
+            Prefix(L(r)) &= Prefix(L(r_1 + r_2)) \\
+            &= Prefix(L(r_1) \cup L(r_2)) \\
+            &= \bigcup \{prefix(x) \text{ } | \text{ } x \in L(r_1) \cup L(r_2) \} \\
+            &= \bigcup \{(prefix(x) \text{ } | \text{ } x \in L(r_1) \cup prefix(x) | x \in L(r_2)) \} \\
+            &= \bigcup \{prefix(x) \text{ } | \text{ } x \in L(r_1) \cup \bigcup prefix(x) | x \in L(r_2) \} \\
+            &= Prefix(L(r_1)) \cup Prefix(L(r_2))\\
+            &= L(r'_1) \cup L(r'_2) \\
+            &= L(r'_1 + r'_2) \\
+            &= L(r')
+        \end{split}
+    \end{equation*}
+        
+The first part is now proven: $ Prefix(L(r)=L(r') $ 
+
+
+\subsection*{Induction step part 2 (concatenating)}
+        $$ \text{For } r=r_{1}r_2 \text{:\: } r' \text{ can be expressed: } r'=r'_1+r_{1}r'_2 $$
+    
+    Because a union is closed for prefix languages and concatering is closed for two regular languages. We can use Lemma 1 in our proof:\\
+        $$ \forall x,y\in\Sigma^*: prefix(xy) = prefix(x) \cup \{x\}prefix(y)$$
+    \begin{equation*}
+        \begin{split}
+        Prefix(L(r)) &= Prefix(L(r_1r_2)) \\
+            &= Prefix(L(r_1)L(r_2)) \\
+            &= \bigcup \{prefix(x) \text{ } | \text{ } x \in L(r_1)L(r_2)\} \\
+            &= \bigcup \{prefix(xy) \text{ } | \text{ } x \in L(r_1) \text{ and } y \in (L(r_2)\} \\
+            &= \bigcup \{prefix(x) \cup x \cdot prefix(y) \text{ } | \text{ } x \in L(r_1) \text{ and } y \in (L(r_2)\} \\
+            &= \bigcup \{prefix(x) \text{ } | \text{ } x \in L(r_1) \} \cup \{x \cdot prefix(y) \text{ } | \text{ } x \in L(r_1) \text{ and } y \in (L(r_2)\} \\
+            &= Prefix(L(r_1)) \cup x \cdot Prefix(L(r_2)) \text{ } | \text{ } x \in L(r_1) \\
+            &= L(r'_1) \cup x \cdot L(r'_2) \text{ } | \text{ } x \in L(r'_1) \\
+            &= L(r'_1 + x \cdot r'_2) \text{ } | \text{ } x \in L(r'_1) 
+        \end{split}
+    \end{equation*}
+    
+    The second part is now proven: $ Prefix(L(r)=L(r') $ with the help of Lemma 1.
+
+
+\subsection*{Induction step part 3 *}
+$ r=r_{1}^{*} \text{, } r'=r_{1}^{'*}  $. 
+    Because we know concatering for prefix languages is closed, can we use Lemma 2 to prove $ r{'} $ regular:
+        $$\forall i>0 \wedge S \subseteq \Sigma^*: prefix(S^i) = \cup_{k = 0...i-1} S^kprefix(S)$$
+       
+    \begin{align*}
+        Prefix(L(r)) &= Prefix(L(r_1^*)) \\
+            &= Prefix(L(r_1)^*) \\
+            &= Prefix \left( \bigcup^{\infty}_{i=0}L(r_1)^i \right) \\
+            &= \bigcup\{prefix(x) \text{ } | \text{ } x \in \bigcup^{\infty}_{i=0}L(_1)^i)\} \\
+            &= \bigcup^{\infty}_{i=0} \bigcup\{prefix(x) \text{ } | \text{ } x \in L(_1)^i\} \\
+            &= \left( \bigcup^{\infty}_{i=1}Prefix(L(r_1)^i)) \cup Prefix(L(r_1)^0 \right) \\
+            &= \left( \bigcup^{\infty}_{i=1}\bigcup^{i-1}_{k=0}L(r_1)^kPrefix(L(r_q)) \cup Prefix(L(r_1))^0 \right)\\
+            &= \left( \bigcup^{\infty}_{k=0}L(r_1)^kPrefix(L(r_1))\right) \cup \Lambda\\
+            &= L(r')
+    \end{align*}
+The third part is now proven: $ Prefix(L(r)=L(r') $ with the help of part two and Lemma 2.
+\end{document}

@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+
+\title{dRegAut afl 4}
+\author{Hanus Rindom 201303613}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercise 1}
+In exercise 1 we are asked to trace the letrec-declared lambda abstraction.\\
+The traced "add$\_$revisited" and "add$\_$revisited$\_$alt":
+
+\input{1a.tex}
+
+Furthermore we are asked to program mul, pow and fac using local recursive procedures. Which we have some running exampels:
+
+\input{1b.tex}
+
+\section*{Exercise 5}
+In this exercise, we are asked to implement three structurally
+recursive procedure: proper-list-ref, proper-list-tail and proper-list-head. these respectively emulate the predefined procedures list-ref, list-head and list-tail:
+\input{5.tex}
+
+\section*{Exercise 8}
+In this exercise we will write an procedure "set-normalize" which will yeald an imput list but without dublications.\\
+Exampels on the procedure set-normalize:
+\input{8.tex}
+
+\section*{Exercise 9}
+In this exercise, we will implement "set-union", "set-intersection", and "set-difference" over representations of sets.
+lists of elements without duplication:
+\input{9.tex}
+I am not quite sure about what i am doing wrong, a hint could be helpful.
+\section*{Exercise 20}
+In this exercise we modify run-byte-code-program so it does not operate on numbers anymore but rather representations of numbers:
+
+\input{20.tex}
+
+Rather than calculation the numbers we get syntactic representations of calculations.
+
+\end{document}

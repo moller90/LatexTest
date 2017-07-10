@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{microtype}
+\usepackage{todonotes}
+
+\title{dRegAut afl 1}
+\author{Hanus Ejdesgaard Rindom 201303613}
+\date{April 2014}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 1}
+    Define a language S for $ \Sigma $, the Prefix(S) is a language consisting of prefixes of strings from S:
+        $$ Prefix(S)=\cup Prefix(x) | x \in S= \cup_{x \in S} Prefix(x) $$
+        
+        $$ r=a+bc $$
+    What is the language L(r) and Prefix(L(r)):\\
+        $$ L(r)= \{a,bc\} $$
+        $$ Prefix(L(r))= prefix(a) \cup prefix(bc) = \{\Lambda,a,b,bc\}$$
+        
+\section{Problem 2}
+    In this section we will prove how any regular language is closed under Prefix: If S is an regular language, then Prefix(S) is an regular language.
+    
+    This section will take into account two Lemma:\\
+    Lemma 1: $$ \forall x,y \in \Sigma^{*}: prefix(xy)=prefix(x) \cup \{x\}prefix(y) $$
+    Lemma 2: $$ \forall i>0 \text{ and } S \subseteq \Sigma{*}: Prefix(S^i)= {\bigcup}_{k=0...i-1} S^k Prefix(S) $$
+    
+    The expression L(r)=S is regular due to the definition of a regular language.
+    
+    The existence of r' is to be proven correct for L(r')=Prefix(S), if this can be proved Prefix(S) is regular.
+    
+\subsection*{Basecase}
+    In this step we will show how to use prefix for 2 basic expressions without loss    of regularity.\\
+    The two expressions for r is Ø and a, where a is any symbol in the alphabet.\\
+    The two basic expressions for r is :
+        $$ r=Ø $$
+        $$ r'=Ø: \text{ } L(r')=\{Ø\}=Prefix(\{Ø\})=\{Ø\}  $$
+    
+        $$ r=a \in E $$
+        $$ r'=a \text{ } L(r')=\{a\}=Prefix(\{a\})=\{a\} $$
+    
+\subsection*{Induction Hypotheses}
+    There exist a regular expression r' where L(r') = Prefix(L(r)).
+
+\subsection*{Induction step part 1 (+)}
+    We want to prove $ Prefix(L(r_1+r_2))=L(r') $ where r is the regular expression $ r = r_1 + r_2 $ and $ r' = r'_1 + r'_2 $ where $ r'_1 \text{ and } r'_2 $ is prefixes.
+    $$ L(r'_1)=Prefix(L(r_1)) \text{ and } L(r'_2)=Prefix(L(r_2)) $$
+$ L(r') $ will then be regular: 
+    $$ L(r')=Prefix(L(r_1)) \cup Prefix(L(r_2)) $$
+
+        \begin{equation*}
+            \begin{split}
+                Prefix(L(r)) &= Prefix(L(r_1+r_2))\\
+                &= Prefix(L(r_1) \cup L(r_2)) \\
+                &= Prefix(L(r_1))+Prefix(L(r_2)) \\
+                &= \bigcup prefix(x) \text{ } | \text{ } x \in L(r_1) \cup L(r_2) \\
+                &= L(r'_1) \cup L(r'_2) \\
+                &= L(r'_1+r'_2) \\
+                &= L(r') \\
+            \end{split}
+        \end{equation*}
+        
+The first part is now proven: $ Prefix(L(r)=L(r') $ 
+
+\subsection*{Induction step part 2 (concatenating)}
+        $$ \text{For } r=r_{1}r_2 \text{ } r' \text{ can be expressed: } r'=r'_1+r_{1}r'_2 $$
+    
+    Because a union is closed for prefix languages and concatering is closed for two regular languages. We can use therom 1 to prove $ r' $ to be regular:
+        $$ \forall x,y\in\Sigma^*: prefix(xy) = prefix(x) \cup \{x\}prefix(y)$$
+    \begin{equation*}
+        \begin{split}
+            Prefix(L(r)) &= Prefix(L(r_{1}r_2)) \\
+            &= Prefix(L(r_1)) \cup L(r_1)Prefix(L(r_2)) \\
+            &= L(r'_1 \cup r_{1}L(r'_2) \\
+            &=L(r') \\
+        \end{split}
+    \end{equation*}
+    
+    The second part is now proven: $ Prefix(L(r)=L(r') $ with the help of Lemma 1.
+
+
+\subsection*{Induction step part 3 *}
+        $$ \text{For } r=r_{1}* \text{ } r' \text{ can be expressed: } r'= {\bigcup} _{k=0...i-1} r^k_1 prefix(r1) $$
+    Because we know concatering for prefix languages is closed, can we use Lemma 2 to prove $ r{'} $ regular:
+        $$ \forall i>0 \text{ and } S \subseteq \Sigma{^*}: Prefix(S^i)= {\bigcup}_{k=0...i-1} S^k Prefix(S) $$
+        $$ prefix(L(r)) = prefix(L(r^*_1)) = L \left( {\bigcup} _{k=0...i-1}r^k_1 prefix(r)\right) = L(r') $$
+
+The third part is now proven: $ Prefix(L(r)=L(r') $ with the help of part two and therom 2.
+\end{document}

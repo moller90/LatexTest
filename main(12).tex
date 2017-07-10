@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[bottom]{footmisc}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+\title{dRegAut afl 4}
+\author{Hanus Rindom}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Martin, opg. 2.55 (c)}
+The first thing the algortihm does is to eliminate states not connedtet with the initial state, this will not change the language accepete by the FA.\\
+This being done we can assume all states of the FA is reachable form the initial state 1.\\
+The first thing the minimization algorithm looks for is distingseble states , such as an accepting state with an nonaccepting state.\\
+
+Now we go through every pair, testing, and comparing, creating an table:
+
+\input{ReducedFATabular}
+
+Pairs marked 1 are the accepting states, these are found on the first pass.\\
+Pairs marked 2 and 3 are marked on the second and third pass. As we can see only pair $ \{ 1,2 \} $ is marked with 3. Which is because it is consideret after pair $ \{ 1,3 \} $, and will have to wait for the third pass. \\
+The algorithm ran through the table vertical, filling the two first lines with 1\footnote{except $ \{ 7,6 \} $ since they both are acceptingstates}.\\
+
+Two boxes in the table is marked with an checkmarks, these is the accepted pairs. These we can combine to form the minimized FA.
+\input{ReducedFA}
+\end{document}

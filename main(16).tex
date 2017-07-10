@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{todonotes}
+
+\title{RegAut afl. 1 genaflevering}
+\author{Anders Kostending, 201303537}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section{Del 2 - induktionsskridt}
+\subsubsection*{Del 1 med "+"}
+    Vi starter med at bevise det ved "+".\\
+    Vi tager et regulært udtryk $r = r_1 + r_2$\\
+    Så sættes $r' = r'_1 + r'_2$ hvor $r'_1$ og $r'_2$ er givet ved induktionshypotesen så $L(r'_1) = Prefix(L(r_1)$.\\
+    $L(r')$ er regulært, da $r'$ er et regulært udtryk og $L(r') = prefix(L(r'_1)) \cup Prefix(L(r'_2))$\\
+    \\
+    Hvis vi skal samle hvad det er der står så vil det være
+    \begin{equation*}
+        \begin{split}
+            Prefix(L(r)) &= Prefix(L(r_1 + r_2)) \\
+            &= Prefix(L(r_1) \cup L(r_2)) \\
+            &= \bigcup{prefix(x) | x \in L(r_1) \cup L(r_2)} \\
+            &= \bigcup(prefix(x) | x \in L(r_1) \cup prefix(x) | x \in L(r_2)) \\
+            &= \bigcup prefix(x) | x \in L(r_1) \cup \bigcup prefix(x) | x \in L(r_2) \\
+            &= Prefix(L(r_1)) \cup Prefix(L(r_2))\\
+            &= L(r'_1) \cup L(r'_2) \\
+            &= L(r'_1 + r'_2) \\
+            &= L(r')
+        \end{split}
+    \end{equation*}
+    
+    
+    Dette er nu bevist.
+
+\newpage
+
+\subsubsection*{Del 2 med "*"}
+    Nu vil vi bevise det ved "*".\\
+    Vi tager et regulært udtryk $r=r_1^*$\\
+    Så sættes $r' = r'_1^*$ og som det vises i del 3, så er konkatenring ved prefix-sprogene bevist.
+    Vi bruger derfor Lemma 2 som siger $$\forall i>0 \wedge S \subseteq \Sigma^*: prefix(S^i) = \cup_{k = 0...i-1} S^kprefix(S)$$
+    som ved brug giver os
+    
+    \begin{align*}
+        Prefix(L(r)) &= Prefix(L(r_1^*)) \\
+            &= Prefix(L(r_1)^*) \\
+            &= Prefix(\bigcup^{\infty}_{i=0}L(r_1)^i) \\
+            &= \bigcup\{prefix(x) | x \in \bigcup^{\infty}_{i=0}L(_1)^i)\} \\
+            &= \bigcup^{\infty}_{i=0} \bigcup\{prefix(x) | x \in L(_1)^i\} \\
+            &= (\bigcup^{\infty}_{i=1}Prefix(L(r_1)^i)) \cup Prefix(L(r_1)^0) \\
+            &= (\bigcup^{\infty}_{i=1}\bigcup^{i-1}_{k=0}L(r_1)^kPrefix(L(r_q)) \cup Prefix(L(r_1))^0)\\
+            &= (\bigcup^{\infty}_{k=0}L(r_1)^kPrefix(L(r_1))) \cup \Lambda\\
+            %&= \bigcup^{\infty}_{i=1} L(\cup_{k = 0...i-1}r_1^kprefix(r)) \cup Prefix(L(r_1)^0)\\
+            &= L(r')
+    \end{align*}
+    
+    Man kunne sætte en de to union sammen til en da de overlappede i union's.
+    
+    Dette er nu bevist ved hjælp af den givne Lemma
+
+\end{document}

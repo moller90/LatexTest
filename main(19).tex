@@ -1,0 +1,453 @@
+\documentclass[a4paper,oneside,article,11pt]{memoir}
+
+% LaTeX example for writing about data structures and algorithms
+% Mathias Rav, 23 January 2012, rav@cs.au.dk
+
+\usepackage[danish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{VerbatimTest}{Verbatim}
+{commandchars=\\\{\}}
+
+% Typesetting pseudo-code
+\usepackage{algorithm}
+\usepackage{algorithmic}
+% Code comments like [CLRS]
+\renewcommand{\algorithmiccomment}[1]{\makebox[5cm][l]{$\triangleright$ \textit{#1}}}
+
+\title{Algorithems and datastructures 2, 1. hand-in}
+\author{Mikkel Ravnholt Knudsen, 201303546\\
+Oliver Emil Harritslev Christensen, 201303592\\
+Anders Kostending Hansen, 201303537}
+\date{April 2014}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{a}
+Given a silhouette on the form described in the assignment and a building \emph{(l,h,r)}, the silhouette can be updated, so that it also contains the building. This is done by finding two x-values in the silhouette list, the first being the largest x-value that is lower than \emph{l}, and the second being the largest x-value that is lower than \emph{r}. Two new entries are made in the silhouette list -- one at the point \emph{l} and one at the point \emph{r}. Each of these are set to have the same height as the x-value to the right of them. Then, each \emph{h} value in the building that is within the boundaries of \emph{l} and \emph{r} is compared to the corresponding \emph{h} value of the silhouette, and updated accordingly. Finally, the silhouette is checked for duplicates, and any such are removed. We have written this in pseudo-code - see part 1 of the pseudo-code section for this (and note that silhuet is the Danish word for silhouette).
+
+\chapter*{b}
+The answer to the question above, can be expanded, so that two silhouettes can be combined. In order to do so, we have used divide-and-conquer. One silhouette is divided into a subset of buildings. This is done by setting \emph{l} to be the first entry of silhouette A, \emph{h} to be the second entry of silhouette A and \emph{r} to be the third entry of silhouette A. This way, we have formed a building, and can therefore use the algorithm from last question. The next building is made by letting \emph{l}, \emph{h} and \emph{r} be equal to the third, fourth and fifth entry of silhouette A respectively. This is done until the end of silhouette A has been reached. Now silhouette B has been updated to include silhouette A, and the only thing that's left to do, is to check for duplicates in the same way we did before. We have written this in pseudo-code - see part 2 of the pseudo-code section for this.
+
+\chapter*{c}
+The main problem is solved by using the previous algorithm. The list of buildings is divided by two. Each of these new lists are then again divided into two, and this is done until each list contains only one building. This one building is then 'transformed' into a silhouette (which is easily done since it's just one building). These silhouettes are then combined to form one big silhouette, in which all of the buildings are contained. Basically, this is done by making an algorithm which calls itself recursively. If the length of the given building list is greater than one, it splits the list in two, and calls itself with each of these two new lists, before combining the result using the algorithm from exercise b. The pseudo-code for this can be found in part 3 of the pseudo-code section.
+
+The algorithm FunctionB (part 2 of the pseudo-code section) has a worst-case running time of $O(n^2)$, where \emph{n} denotes the length of the first silhouette. This is because the outer for-loop takes $O(n/2)$ time at maximum, and both the while-loop, and the inner for-loop takes $O(n/2)$ time at maximum as well. This gives a worst-case running time for the entire algorithm of $O(n/2*(2*n/2)) = O(n^2/2) = O(n^2)$. The algorithm FunctionC takes constant time if we do not take into account the time the call of FunctionB takes. The first time FunctionC is called, it takes $O(n^2)$ time to run (assuming it contains more than one building). Each level of recursion takes half of the time that the level before that did, but the algorithm is run twice as many times. For instance, the first recursion takes $O(2*((n^2 /4)/2)) = O(n^2)$ time. Since the list is split into two, the depth of the recursion is defined by $log_2$. Therefore, the total running-time of algorithm FunctionC is $O(n^2log_2n)$
+
+%The running time of the algorithm is $O(n)$ where n is the length of the ssilhuet. It runs through n, circa 3 times which is $3n = O(n)$.
+
+\chapter*{Pseudo-code}
+In the following parts we will call the method \emph{FIXUP()} which will be described here.
+The method's purpose is just to remove any unnecessary \emph{x} and \emph{h} values in the list of the silhouette.
+
+\begin{VerbatimTest}
+FIXUP(Silhuet)
+    //Search through the entire silhouette list
+    while i < to Silhuet.length - 1 
+        //Checks if two x-values are equal. Delete one of the entries if they are
+        if Silhuet[i] == Silhuet[i+2]
+            //Removes the entry Silhuet[i+1], and shifts everything to the right
+            //one place left
+            DELETE(Silhuet[i+1])
+            
+            //Removes the entry Silhuet[i+1], and shifts everything to the right
+            //one place left
+            DELETE(Silhuet[i+1])
+            
+        //Makes sure that there is actually something left in the list.
+        //If not, break
+        if Silhuet[i+1] == null || Silhuet[i+2] == null
+            break
+        //Checks whether two heights are equal.
+        if Silhuet[i+1] == Silhuet[i+3] 
+            //Delete one of the entries if they are (same as above)
+            DELETE(Silhuet[i+1])        
+            DELETE(Silhuet[i+1])
+        i += 2
+    return Silhuet
+\end{VerbatimTest}
+
+\chapter*{Part 1}
+
+\begin{VerbatimTest}
+//The function takes a silhouette, and the elements of a building,
+//l, h and r respectively
+FunctionA(Silhuet, l,h,r)
+    //Initialize variables
+    i = 0
+    x = 0
+    y = 0
+
+    while Silhuet[i] < r
+        //Find the x value of Silhuet, just left of l and save it as y
+        y = Silhuet[i]
+        if (Silhuet[i] < l)
+            //Find the x value of Silhuet, just left of r and save it as x
+            x = Silhuet[i]
+        i += 2
+
+    //Insert l in the list Silhuet, after index x,
+    //and shift everything on the right one place right
+    INSERT(l, Silhuet[x])
+    //Insert the height just right of l, just before l,
+    //and shift everything on the right one place right
+    INSERT(Silhuet[x+2], Silhuet[x])
+
+     //Insert r in the list Silhuet, after index y,
+     //and shift everything on the right one place right
+    INSERT(r, Silhuet[y])
+    //Insert the height just right of r, just before r,
+    //and shift everything on the right one place right
+    INSERT(Silhuet[y+2], Silhuet[y])
+
+    //For-loop for updating the silhouette. Iterates over the x-values
+    for i = 2 to Silhuet.length
+        //If we haven't reached the building yet, skip this iteration of the loop
+        if Silhuet[i] < l
+            next
+
+        //If we've reached the right side of the building, break the for loop
+        if Silhuet[i] > r
+            break
+
+        //Updates the height where required
+        if Silhuet[i-1] < h             
+            Silhuet[i-1] = h
+
+        i += 2
+    
+    //Our silhouette might contain duplicate entries,
+    //and/or duplicate x-values. This fixes that
+    return FIXUP(Silhuet)
+\end{VerbatimTest}
+
+%\begin{algorithm}
+ % \caption{$\text{FunctionA}(Silhuet\ bygning(l,h,r))$}
+  %\label{alg-maxsum2d}
+  %\begin{algorithmic}[1]
+  %	\STATE i = 0 \COMMENT{Initialize variables}
+   % \STATE x = 0
+    %\STATE y = 0 \\
+%    \COMMENT{Find the x value of Silhuet, just left of l and save it as y}
+ %   \WHILE{$Silhuet[i] < r$}
+  %      \STATE y = Silhuet[i]
+   %     \IF{$Silhuet[i] < l$}
+    %        \STATE x = Silhuet[i]
+     %   \ENDIF
+      %  \STATE i += 2
+%    \ENDWHILE
+ %   \STATE INSERT(l, Silhuet[x]) \\
+  %  \COMMENT{Insert l in the list Silhuet, after index x, and shift everything on the right one place right}
+   % \STATE INSERT(Silhuet[x+2], Silhuet[x])
+    %\STATE INSERT(r, Silhuet[y])
+%    \STATE INSERT(Silhuet[y+2], Silhuet[y])–
+ %   \FOR{$i = 2 to Silhuet.length$}
+  %      \IF{$Silhuet[i] < l$}
+   %         \STATE next
+    %    \ENDIF
+     %   \IF{$Silhuet[i] < r$}
+      %      \STATE break
+%        \ENDIF
+ %       \IF{$Silhuet[i-1] < h$}
+  %          \STATE Silhuet[i-1] = h
+   %     \ENDIF
+    %    \STATE i += 2
+%    \ENDFOR
+ %   \RETURN FIXUP(Silhuet)
+  %  \COMMENT{Fixes possible dublicates of x-values and returns the new silhuet}
+%  \end{algorithmic}
+%\end{algorithm}
+
+ %\STATE <text>
+ %\IF{<condition>} \STATE{<text>} \ENDIF
+ %\FOR{<condition>} \STATE{<text>} \ENDFOR
+ %\FOR{<condition> \TO <condition> } \STATE{<text>} \ENDFOR
+ %\FORALL{<condition>} \STATE{<text>} \ENDFOR
+ %\WHILE{<condition>} \STATE{<text>} \ENDWHILE
+ %\REPEAT \STATE{<text>} \UNTIL{<condition>}
+ %\LOOP \STATE{<text>} \ENDLOOP
+ %\REQUIRE <text>
+ %\ENSURE <text>
+ %\RETURN <text>
+ %\PRINT <text>
+ %\COMMENT{<text>}
+ %\AND, \OR, \XOR, \NOT, \TO, \TRUE, \FALSE
+
+\chapter*{Part 2}
+
+\begin{VerbatimTest}
+FunctionB(SilhuetA, SilhuetB)
+    j = 0
+    //Iterate over every second entry in SilhuetA (the x-values)
+    for i = 0 to SilhuetA.length - 1
+        //Set up variables, where l, h and r denote
+        //left, height and right respectively
+        l = SilhuetA[i]
+        h = SilhuetA[i+1]
+        r = SilhuetA[i+2]
+
+        //Initialize variables
+        x = 0
+        y = 0
+
+        while SilhuetB[j] < l
+            //Find the x value of Silhuet, just left of l
+            //and save it as x
+            x = SilhuetB[j]
+            j += 2
+        
+        k = j
+        while SilhuetB[k] < r 
+            //Find the x value of Silhuet, just left of r and save it as y
+            y = SilhuetB[k]
+            k += 2
+
+        //Insert l in the list SilhuetB, after index x, but before index x+1
+        //and shift everything on the right one place right
+        INSERT(l, SilhuetB[x])
+        //Insertion as above.
+        //Makes the height before l equal to the height after l
+        INSERT(SilhuetB[x+2], SilhuetB[x])
+
+        //Insertion as above. Inserts r after index y
+        INSERT(r, SilhuetB[y])
+        //Insertion as above. Inserts the height as above
+        INSERT(SilhuetB[y+2], SilhuetB[y])
+
+        //For-loop for updating the silhouette. Iterates over the x-values
+        for k = 2 to SilhuetB.length -1
+            //If we haven't reached the building yet,
+            //skip this iteration of the loop
+            if SilhuetB[k] < l
+                next
+
+            //If we've reached the right side of the building,
+            //break the for loop
+            if SilhuetB[k] > r
+                break
+
+            //Updates the height where required
+            if SilhuetB[k-1] < h
+                SilhuetB[k-1] = h
+
+            k += 2
+        i += 2
+
+    //Our silhouette might contain duplicate entries,
+    //and/or duplicate x-values. This fixes that
+    return FIXUP(SilhuetB)
+
+\end{VerbatimTest}
+
+
+%\begin{algorithm}
+%  \caption{$\text{FunctionB}(SilhuetA\ SilhuetB)$}
+%  \label{alg-maxsum2d}
+%  \begin{algorithmic}[2]
+%    \STATE something
+%  \end{algorithmic}
+%\end{algorithm}
+
+\chapter*{Part 3}
+
+\begin{VerbatimTest}
+FunctionC(BuildingList)
+    //If more than 1 element, split list in two
+    if bl.length > 1        
+        //Find the middle of the list. Assume it rounds down if not an integer
+        a = bl.length/2    
+        //Combine the two silhouettes. n denotes the last entry of the list
+        return FunctionB(FunctionC(bl[0...a], FunctionC(bl[a+1...n])))
+        
+    else
+        //There is only one building. Return this as a silhouette
+        return Silhuet(l,h,r)
+\end{VerbatimTest}
+
+%\begin{VerbatimTest}
+%FunktionC(BuildingList)
+%    Silhuet = (0,0,0)                       //Make an (almost) empty silhuet
+%    for i = 0 to BuildingList.length - 1    //Iterate over the buildings in the list
+%        building = BuildingList[i]          //Extract the current building
+%        l = building[0]                     //Extract the left side of 
+%                                            //the current building
+%        h = building[1]                     //Extract the height of 
+%                                            //the current building
+%        r = building[2]                     //Extract the right side of 
+%                                            //the current building
+%        i = 0                               //Prepare variables
+%        x = 0
+%        y = 0
+%
+%        while Silhuet[i] < r
+%            y = Silhuet[i]                  //Find the x value of Silhuet, 
+%                                            //just left of l and save it as y
+%            if (Silhuet[i] < l)
+%                x = Silhuet[i]              //Find the x value of Silhuet, 
+%                                            //just left of r and save it as x
+%            i += 2
+%
+%        INSERT(l, Silhuet[x])               //Insert l in the list SilhuetB, 
+%        //after index x, but before index x+1 and shift everything on
+%        //the right one place right
+%        INSERT(Silhuet[x+2], Silhuet[x])    //Insertion as above. 
+%        //Makes the height before l equal to the height after l
+%
+%        INSERT(r, Silhuet[y])               //Insertion as above. 
+%                                            //Inserts r after index y
+%        INSERT(Silhuet[y+2], Silhuet[y])    //Insertion as above. 
+%                                            //Inserts the height as above
+%
+%        for i = 2 to Silhuet.length         //For-loop for updating the Silhuet.
+%                                            //Iterates over the x-values
+%            if Silhuet[i] < l               //If we haven't reached the building 
+%                                            //yet, skip this iteration of the loop
+%                next
+%
+%            if Silhuet[i] > r               //If we've reached the right side of 
+%                                            //the building, break the for loop
+%                break
+%
+%            if Silhuet[i-1] < h             //Updates the height where required
+%                Silhuet[i-1] = h
+%
+%            i += 2
+%
+%    return FIXUP(Silhuet)                   //Our Silhuet might contain duplicate 
+%    //entries, and/or duplicate x-values. This fixes that
+%\end{VerbatimTest}
+
+
+
+%\begin{algorithm}
+%  \caption{$\text{FunctionC}(BuildingList bl)$}
+%  \label{alg-maxsum2d}
+%  \begin{algorithmic}[3]
+%    \STATE something
+%  \end{algorithmic}
+%\end{algorithm}
+
+\section*{genaflevering ned ad}
+
+\section*{README}
+The following is the rehand-in of the first hand-in.
+We have only sent you the parts that you wanted us to do again to give you a better overview, of what have been done.
+
+You asked us re-do part B of the hand-in.
+
+\section*{Explanation}
+The algorithm works by comparing the first two x-values from the two silhouettes, and inserts the smallest of those two in a new silhouette, along with it's height. It then goes through both of the given silhouettes, comparing their x-values and heights, and inserting those in the new silhouette where appropriate.
+
+The while-loop will run a maximum of $n-1$ times, where \emph{n} is the combined length of SilhuetA and SilhuetB. The for-loop will also run a maximum of $n-1$ times, which gives a total worst-case running time for the algorithm of $O(n)$. Since FunctionC splits the list of buildings in two every time it calls itself, the depth of the recursion is $log(n)$, where \emph{n} is the number of buildings in the list. This gives FunctionC a total worst-case running time of $n \cdot log(n)$, where \emph{n} is the number of buildings in the list.
+
+%If this is the case, the for-loop for appending what is left will run just three times. Besides this, there are a maximum of three comparisons in the if-statements before the while-loop, and one comparison after the while-loop. This gives a total worst-case running time of $
+
+\newpage
+
+\section*{FunctionB - pseudo}
+
+\begin{VerbatimTest}
+FunctionB(SilhuetA, SilhuetB)
+    //Initialize variables. If A == true, the last appended value is from SilhuetA 
+    //else, the last appended value is from SilhuetB.
+    //Assume that SilhuetC is a new, empty silhouette
+    a = 0
+    b = 0
+    Boolean A = true
+    SilhuetC
+
+    //If the first entry in SilhuetA is smallest, insert that with it's height
+    if (SilhuetA[0] < SilhuetB[0])
+        SilhuetC.append(SilhuetA[0], SilhuetA[1])
+        a = 2
+
+    //Else, if the first entry in SilhuetA is equal to the first entry in SilhuetB,
+    //insert the one with the greatest height
+    else if (SilhuetA[0] == SilhuetB[0])
+        if SilhuetA[1] > SilhuetB[1]
+            SilhuetC.append(SilhuetA[0], SilhuetA[1])
+            a = 2
+        else
+            SilhuetC.append(SilhuetB[0], SilhuetB[1])
+            b = 2
+            A = false
+
+    //If none of the above, the first entry in SilhuetB must be smallest, 
+    //and is therefore inserted with it's height
+    else
+        SilhuetC.append(SilhuetB[0], SilhuetB[1])
+        b = 2
+        A = false
+
+    //Compare the Silhuets until one is exhausted
+    while (a < SilhuetA.length -1 && b < SilhuetB.length -1)
+        //If the current x-value in SilhuetA is smallest, and the last 
+        //appended value was from SilhuetA, 
+        //append the value along with it's height
+        if (SilhuetA[a] < SilhuetB[b] && A)
+            SilhuetC.append(SilhuetA[a], SilhuetA[a+1])
+            a += 2
+
+
+        //Else, if the current x-value in SilhuetA is smaller or 
+        //equal to that of SilhuetB, and the last appended 
+        //value was from SilhuetB, compare their heights. 
+        //If SilhuetA's height is greater, append that, else,
+        //skip that x-value, along with it's height
+        else if (SilhuetA[a] <= SilhuetB[b] && !A)
+            if (SilhuetA[a+1] > SilhuetB[b-1])
+                SilhuetC.append(SilhuetA[a], SilhuetA[a+1])
+                A = true
+            a += 2
+
+        //Else, if the current x-value in SilhuetB is smallest, 
+        //and the last appended value was from SilhuetB, 
+        //append the value along with it's height
+        else if (SilhuetA[a] > SilhuetB[b] && !A)
+            SilhuetC.append(SilhuetB[b], SilhuetB[b+1])
+            b += 2
+
+        //In the last case, the current x-value in SilhuetB is smaller 
+        //or equal to that of SilhuetA, and the last appended value 
+        //was from SilhuetA.Therefore, their heights are compared, 
+        //and if SilhuetB's height is greater, 
+        //append that, else, skip that x-value along with it's height
+        else
+            if (SilhuetB[b+1] > SilhuetA[a-1])
+                SilhuetC.append(SilhuetB[b], SilhuetB[b+1])
+                A = false
+            b += 2
+
+    //If SilhuetB is exhausted, append what's left in SilhuetA
+    if a < SilhuetA.length -1
+        for i = a to SilhuetA.length -1
+            SilhuetC.append(SilhuetA[i])
+
+    //Else, SilhuetA is exhausted, and what's left in SilhuetB is appended
+    else
+        for i = b to SilhuetB.length -1
+            SilhuetC.append(SilhuetB[i])
+
+    return SilhuetC
+\end{VerbatimTest}
+
+\section*{FunctionC pseudo}
+\begin{VerbatimTest}
+FunctionC(BuildingList)
+    //If more than 1 element, split list in two
+    if bl.length > 1        
+        //Find the middle of the list. Assume it rounds down if not an integer
+        a = bl.length/2    
+        //Combine the two silhouettes. n denotes the last entry of the list
+        return FunctionB(FunctionC(bl[0...a], FunctionC(bl[a+1...n])))
+        
+    else
+        //There is only one building. Return this as a silhouette
+        return Silhuet(l,h,r)
+\end{VerbatimTest}
+
+\end{document}
+

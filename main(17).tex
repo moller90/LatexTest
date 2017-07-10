@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{todonotes}
+
+\title{Regularitet og Automater afl. 1}
+\author{Anders Kostending, 201303537}
+\date{April 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Del 1}
+    Lad r være det regulære udtryk a+bc. Hvad er de to sprog L(r) og Prefix(L(r))?
+    $$r = a + bc$$
+    $$L(r) = \{a,bc\}$$
+    Da Prefix kan tages som 
+    \begin{equation*} 
+        \begin{split}
+            Prefix(l(r)) & = Prefix({a}) \cup Prefix({bc})\\
+             & = \{\Lambda, a, b, bc\}
+        \end{split}
+    \end{equation*}
+
+\section*{Del 2}
+    Giv et konstruktivt bevis for at klassen af regulære sprog er lukket under Prefix
+
+\subsection*{Base case:}
+    Hvis vi siger at det regulære udtryk $r' = Ø$ så er $L(r') = \{Ø\}$ og $Prefix(\{Ø\}) = \{Ø\}$
+    \\
+    Hvis vi siger at det regulære udtryk $r' = a$ så er $l(r') = \{a\}$ og $Prefix(\{a\}) = \{a\}$ hvor \emph{a} er et hvert symbol i et sprog $\Sigma$
+
+\subsection*{Induktions Hypotese}
+    Vores hypotese siger at der er et regulært udtryk som gør at $L(r') = Prefix(L(r'))$
+
+\subsection*{Induktions skridt}
+\subsubsection*{Del 1 med "+"}
+    Vi starter med at bevise det ved "+".\\
+    Vi tager et regulært udtryk $r = r_1 + r_2$\\
+    Så sættes $r' = r'_1 + r'_2$ hvor $r'_1$ og $r'_2$ er prefixer er sprogene over dem.\\
+    Ved dette vil $L(r')$ være regulært, da $L(r') = prefix(L(r'_1)) \cup Prefix(L(r'_2))$\\
+    \\
+    Hvis vi skal samle hvad det er der står så vil det være
+    \begin{equation*}
+        \begin{split}
+            Prefix(L(r)) &= Prefix(L(r_1 + r_2)) \\
+            &= Prefix(L(r_1) \cup L(r_2)) \\
+            &= Prefix(L(r_1)) +  Prefix(L(r_2)) \\
+            &= \bigcup{prefix(x) | x \in L(r_1) \cup L(r_2)} \\
+            &= L(r'_1) \cup L(r'_2) \\
+            &= L(r'_1 + r'_2) \\
+            &= L(r')
+        \end{split}
+    \end{equation*}
+    
+    
+    Dette er nu bevist.
+
+\subsubsection*{Del 2 med "*"}
+    Nu vil vi bevise det ved "*".\\
+    Vi tager et regulært udtryk $r=r_1^*$
+    Så sættes $r' = \cup_{k=0...i-1}r_1^k$ og som det vises i del 3, så er konkatenring ved prefix-sprogene bevist.
+    Vi bruger derfor Lemma 2 som siger $$\forall i>0 \wedge S \subseteq \Sigma^*: prefix(S^i) = \cup_{k = 0...i-1} S^kprefix(S)$$
+    som ved brug giver os
+    
+    \begin{align*}
+        Prefix(L(r)) &= Prefix(L(r_1^*)) \\
+            &= Prefix(L(r_1)*) \\
+            &= Prefix(\bigcup^{\infty}_{i=0}L(_1)^i) \\
+            &= \bigcup\{prefix(x) | x \in \bigcup^{\infty}_{i=0}L(_1)^i)\} \\
+            &= \bigcup^{\infty}_{i=0} \{prefix(x) | x \in L(_1)^i\} \\
+            &= \bigcup^{\infty}_{i=0} Prefix(L(_1)^i) \\
+            &= \bigcup^{\infty}_{i=0} L(\cup_{k = 0...i-1}r_1^kprefix(r))\\
+            &= L(r´_1)
+    \end{align*}
+    
+    Dette er nu bevist ved hjælp af den givne Lemma
+
+\subsubsection*{Del 3 med konkatenering}
+    Nu vil vi bevise konkatenering.
+    Vi tager et regulært udtryk $r = r_1r_2$\\
+    Så sættes $r' = r'_1 + r'_1r'_2$ hvor $r'_1$ og $r'_2$ er prefixer er sprogene over dem.\\
+    I dette tilfælde bruger vi den givne Lemma 1 som siger $$ \forall x,y\in\Sigma^*: prefix(xy) = prefix(x) \cup x\cdot prefix(y)$$
+    som ved brug giver os
+    
+    \begin{equation*}
+        \begin{split}
+        Prefix(L(r)) &= Prefix(L(r_1r_2)) \\
+            &= Prefix(L(r_1)L(r_2)) \\
+            &= \bigcup \{prefix(x) | x \in L(r_1)L(r_2)\} \\
+            &= \bigcup \{prefix(xy) | x \in L(r_1) \wedge y \in (L(r_2)\} \\
+            &= \bigcup \{prefix(x) \cup x \cdot prefix(y) | x \in L(r_1) \wedge y \in (L(r_2)\} \\
+            &= \bigcup \{prefix(x) | x \in L(r_1) \} \cup \{x \cdot prefix(y) | x \in L(r_1) \wedge y \in (L(r_2)\} \\
+            &= Prefix(L(r_1)) \cup x \cdot Prefix(L(r_2)) | x \in L(r_1) \\
+            &= L(r'_1) \cup x \cdot L(r'_2) | x \in L(r'_1) \\
+            &= L(r'_1 + x \cdot r'_2) | x \in L(r'_1) 
+        \end{split}
+    \end{equation*}
+    
+    Dette er nu bevist, ved hjælp af den givne lemma.
+
+\end{document}
+
+
+

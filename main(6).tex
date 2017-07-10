@@ -1,0 +1,131 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+
+\title{dProgSprog afl 5}
+\author{Hanus Rindom 201303613}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{opg 5}
+\begin{verbatim}
+; > (mystery-1 '(1 2 3 4 5 6 7 8 9))
+; 1
+\end{verbatim}
+Mystery-1 tager en liste og retunere det første element.\\
+Jeg ville kalde mystery-1 for car.
+
+; > (mystery-2 '(1 2 3 4 5 6 7 8 9))
+; (2 3 4 5 6 7 8 9)
+
+Mystery-1 tager en liste og retunere and andet end første element.\\
+Jeg ville kalde mystery-1 for cdr.
+
+\section*{opg 6}
+\begin{verbatim}
+; > ((((curry3 +) 1) 10) 100)
+; 111
+
+; > ((((curry3 +) 1) 10) 100)
+; |(c_f #<procedure +>)
+; |#<procedure>
+; |(c_x1 1)
+; |#<procedure>
+; |(c_x2 10)
+; |#<procedure>
+; |(c_x3 100)
+; |111
+; 111
+
+
+; > ((uncurry3 (curry3 +)) 1 10 100)
+; 111
+
+; > ((uncurry3 (curry3 +)) 1 10 100)
+; |(c_f #<procedure +>)
+; |#<procedure>
+; |(unc_f #<procedure>)
+; |#<procedure>
+; |(unc_x1_3 1 10 100)
+; | (c_x1 1)
+; | #<procedure>
+; | (c_x2 10)
+; | #<procedure>
+; |(c_x3 100)
+; |111
+; 111
+
+\end{verbatim}
+
+\section*{opg 10}
+Which function does (fold-right$\_$nat 0 1$+$) implement?\\
+Fold-right$\_$nat har en variable (succ-case) som tæller op, hver gang den tæller det givne nummer (her x) ned.\\
+Implementeret på en funktion:
+\begin{verbatim}
+(define test
+  (lambda x (x)))
+
+giver dette
+
+> (define count_rec_down
+  (fold-right_nat)
+> (count_rec_down 4)
+|(visit_fold-right_nat 4)
+| (visit_fold-right_nat 3)
+| |(visit_fold-right_nat 2)
+| | (visit_fold-right_nat 1)
+| | |(visit_fold-right_nat 0)
+| | |0
+| | 1
+| |2
+| 3
+|4
+4
+\end{verbatim}
+
+Which function does (fold-left$\_$nat 0 1$+$) implement?\\
+fold-left$\_$nat er en rekursiv procedyre som tæller op hver gang der er udført en rekursion.
+\begin{verbatim}
+> (define count_rec_up
+  (fold-left_nat)
+> (count_rec_up 4)
+|(visit_fold-left_nat 4 0)
+|(visit_fold-left_nat 3 1)
+|(visit_fold-left_nat 2 2)
+|(visit_fold-left_nat 1 3)
+|(visit_fold-left_nat 0 4)
+|4
+4
+\end{verbatim}
+Which function does (fold-right$\_$proper-list $'()$ cons) implement?\\
+fold-right$\_$proper-list er en rekursiv procedyre som tager et inout fra en given liste og propper det ind i en ny liste.
+\begin{verbatim}
+> (define copy
+  (fold-right_proper-list '() cons))
+> (copy '(1 2 3))
+(1 2 3)
+\end{verbatim}
+
+Which function does (fold-left$\_$proper-list $'()$ cons) implement?\\
+fold-left$\_$proper-list tager car elementet fra en given liste og sætter det ind i en ny liste. Derved fås en reverse effekt.
+\begin{verbatim}
+fold-left_proper-list tager car elementet fra en given liste og sætter det ind i en ny liste. Derved fås en reverse effekt.
+> (define reverse
+  (fold-left_proper-list '() cons))
+> (reverse '(1 2 3))
+(3 2 1)
+\end{verbatim}
+\end{document}

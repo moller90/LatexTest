@@ -1,0 +1,68 @@
+\begin{verbatim}
+> (mul-traced_re 2 3)
+|(mulTrace 2 3)
+| (mulTrace 1 3)
+| |(mulTrace 0 3)
+| |0
+| 3
+|6
+6
+
+> (fac-traced_re 3)
+|(facTrace 3)
+| (facTrace 2)
+| |(facTrace 1)
+| | (facTrace 0)
+| | 1
+| |(mulTrace 1 1)
+| | (mulTrace 0 1)
+| | 0
+| |1
+| (mulTrace 2 1)
+| |(mulTrace 1 1)
+| | (mulTrace 0 1)
+| | 0
+| |1
+| 2
+|(mulTrace 3 2)
+| (mulTrace 2 2)
+| |(mulTrace 1 2)
+| | (mulTrace 0 2)
+| | 0
+| |2
+| 4
+|6
+6
+
+> (pow-traced_re 3 3)
+|(powTrace 3 3)
+| (powTrace 3 2)
+| |(powTrace 3 1)
+| | (powTrace 3 0)
+| | 1
+| |(mulTrace 3 1)
+| | (mulTrace 2 1)
+| | |(mulTrace 1 1)
+| | | (mulTrace 0 1)
+| | | 0
+| | |1
+| | 2
+| |3
+| (mulTrace 3 3)
+| |(mulTrace 2 3)
+| | (mulTrace 1 3)
+| | |(mulTrace 0 3)
+| | |0
+| | 3
+| |6
+| 9
+|(mulTrace 3 9)
+| (mulTrace 2 9)
+| |(mulTrace 1 9)
+| | (mulTrace 0 9)
+| | 0
+| |9
+| 18
+|27
+27
+\end{verbatim}

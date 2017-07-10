@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+
+\title{dRegAut afl 4}
+\author{Hanus Rindom 201303613}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Martin 2.22 (b)}
+In this exercise we will use the pumping lemma to show the following language cannot be accepted by an FA:
+    $$ L= \{ a^i b^j a^k | k > i + j \} $$
+For this we will use proof by contradiction.\\
+Suppose for the sake of contradiction that L can be described by an FA with n states. We let $ x = a^n b a^{n+2} $ thus $ x \in L $.\footnote{We cannot choose the last a to be $ a^{n+1} $ because it would not hold the $ k > j+i $ condition.}\\
+Then, because L can be described by an FA, and have to satisfy:
+    \input{Conditions.tex}
+Because we have chosen the first $ n $ symbols of $ x $ to be a, and $ |uv| \leq n \wedge |v| > 0 $ we can conclude that the string $ v $ must be $ a^j $ for some $ j > 0 $ and therefore must $ u v^2 w = a^{n+j} b a^{n+2} $.\\
+Which is an contradiction: 
+    $$ u v^2 w \in L \text{ but } n+j+1	\not< n+2 $$
+The Pumping lemma was used to prove how the language $ L= \{ a^i b^j a^k | k > i + j \} $ could not be accepted by an FA.
+\end{document}

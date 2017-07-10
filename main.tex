@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\title{dADS. Aflevering 3}
+\author{
+	Hanus Ejdesgaard Møller \\
+	Andreas Fogh-Pedersen \\
+	Christian Høj
+}
+
+\begin{document}
+\maketitle
+\section{Problem 6-2}
+\subsection{a}
+    Et d-ary heap kan implementeres ved hjælp af et array med rodelementet gemt i A[1], og børnene er gemt ordnet i A[2] til A[d+1].\\
+    Algoritmer/funktioner, der giver hvilket indeks i's parent har, og givet i og j siger, hvilket indeks i's j'te child har.\\
+\\
+D-ARY-PARENT(i)\\
+return $ \lfloor (i-2)/d+1 \rfloor $\\
+\\
+D-ARY-CHILD(i, j)\\
+return $ d(i - 1) + j + 1 $\\
+
+\subsection{b}
+    Antallet af elementer kan beskrives med følgende formel
+    \[ 1+d+d^2+d^3 \text{ ... } d^{h-1}+d^h=n \]
+    \[ n= \frac{d^{h+1}}{d-1} \]
+        Isoleres højden h af heapet fås:
+    \[ h= \frac{log(n*d-1+1)}{log(d)}-1 \; = \; \frac{log_d(n)}{log(d)}+\frac{log(d)}{log(d)}-1 \; = \; \frac{log(n)}{log(d)}+1 -1 \; = \; \frac{log(n)}{log(d)} \]
+    Dette er gældene og rigtigt såfremt heapet er fuldt.\\
+    Da det ikke kan antages, anvender vi $ \Theta $ notationen, hvilket eliminerer den konstante variation af børn i det sidste led.  \[ \Theta \frac{log(n)}{log(d)}= \Theta log_d(n) \]
+    
+\subsection{c}
+HEAP-EXTRACT-MAX algoritmen fra bogen virker helt fint, men MAX-HEAPIFY skal gennemgå d-børn i stedet for 2 børn, dette tager $ \Theta(d*log_d*n) $, hvilket også er det som tager længst tid i HEAP-EXTRACT-MAX, og er derfor den dominerende tid.\\
+    \begin{verbatim}
+MAX-HEAPIFY(A, i)
+    1   n = i.children
+    2   let P[1 ..n-1, n] be a new array
+    3   max = i
+    4   for each node in P
+    5   if node > max
+    6   max = node
+    7   if max <> i
+    8   exchange A[i] with A[max]
+    9   MAX-HEAPIFY(A, i)
+    \end{verbatim}
+    
+    \begin{verbatim}
+HEAP-EXTRACT-MAX(A)
+    1   if A.heap-size < 1
+    2       error "heap underflow"
+    3   max = A(1)
+    4   A(1) = A[A.heap-size]
+    5   A.heap-size = A-heap-size - 1
+    6   MAX-HEAPIFY(A, 1)
+    7   return max
+    \end{verbatim}
+\subsection{d}
+
+    \begin{verbatim}
+INSERT(A, key)
+    1   A.heap_size = A.heap_size +1
+    2   A[A.heap_size] = -inf
+    3   INCRESE-KEY(A, A.heap_size, key)
+    \end{verbatim}
+    
+    Da algoritmen muligvis skal gennemløbe alle elementerne n for at finde stedet der skal indsættes et element et O-notationen:
+    $ O \frac{log(n)}{log(d)} = O(log_d(n)) $
+\subsection{e}
+
+    \begin{verbatim}
+INCRESE-KEY(A, i, k)
+    1   if key < A[i]
+    2       error "new key is smaller than current key"
+    3   A[i] = key
+    4   while i > 1 and A[i] > A[d-arry-PARENT(i)]
+    5       exchange A[i] with A[d-arry-PARENT(i)]
+    6       i = d-arry-PARENT(i)
+    \end{verbatim}
+    Da algoritmen muligvis skal gennemløbe alle elementerne n for at finde stedet der skal indsættes et element et O-notationen:
+    $ O \frac{log(n)}{log(d)} = O(log_d(n)) $
+\end{document}

@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{black},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{black},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+\title{dADS 2 afl 3}
+\author{Hanus Rindom}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{A}
+
+\begin{lstlisting}
+Subsequence-Aux(F, X, Y, Z, i, j)
+if(F[i,j] != nil)
+	return
+if(i == x.length+1) //Assuming X[0...x.length-1]
+	return          //and not X[1...x.length], i is now out of bounds
+if(j == y.length+1) //as above
+	return
+if(i == 0 and j == 0)
+	F[i, j] = true
+if(i == 0 and j >=1)
+	F[i,j] = (Z[j+i] == Y[j] and F[i, j-1])
+if(j == 0 and i >= 1)
+	F[i,j] = (Z(j+i) == X[i] and F[i-1,j])
+if(j >= 1 and i >= 1)
+	F[i,j] = ((Z[j+i] == Y[j] and F[i, j-1]) or F[i,j] = (Z[j+i] == X[i] and F[i-1,j]))
+Subsequence-Aux(F, X, Y, Z, i+1, j)
+Subsequence-Aux(F, X, Y, Z, i, j+1)
+
+Subsequence(X, Y, Z)
+Make array F[0...x.length][0...y.length]
+Subsequence-Aux(F, X, Y, Z, 0, 0)
+return F[x.length-1][y.length-1]
+
+\end{lstlisting}
+
+\section*{B}
+
+\section*{C}
+
+\end{document}

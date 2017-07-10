@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{alltt}
+\usepackage{enumerate}
+\usepackage{microtype}
+\usepackage{todonotes}
+
+
+
+\title{dADS 2 afl 5}
+
+\author{
+	Hanus Ejdesgaard Møller 201303613 \\
+	Andreas Fogh-Pedersen 201303562 \\
+	Christian Høj 201303530
+}
+
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{A}
+n and m described as a function of k:
+    $$ f(n) = k^2  $$
+            \begin{equation*}
+            \begin{split}
+                f(m) &= k*(2 (k-1))+k*(k-1)\\
+                &= k*(2k-2)+k^2-k\\
+                &= 2k^2-2k+k^2-k\\
+                &= 3k^2-3k\\
+            \end{split}
+        \end{equation*}
+        
+Eks: $ k = 42 $
+    $$ f(n) = 42^2 = 1764 $$
+    $$ f(m) = 3*42^2-3*42 = 5166 $$
+    
+\section*{B}
+The runtime of Dijkstra algortihme is $ O((m+n)*log(n)) $, because we have to descripe it as a function of k\\
+which was:
+    $$ f(n) = k^2  $$
+    $$ f(m) = 3k^2-3k  $$
+
+The runningtime can be described as:
+
+        \begin{equation*}
+            \begin{split}
+                & O((k^2+3k^2-3k)*log(k^2)) = O((4k^2-3k)*log(k^2))\\
+            \end{split}
+        \end{equation*}
+
+\section*{C}
+The shortest path from $ s $ ($ v_{1,1} $) to any other node can be found by starting in $ s $ and relaxing alt the outgoing edges of the buttom layer. When this is done we will have found the shortest path from $ s $ to every node in the bottum layer.\\
+Then we go one layer up from $ s $ and relaxing the nodes form left to right, and from right to left. This step is repeatet undtil the top layer is relaxed.\\
+Now the shortest path to a given node must be either the path form the node directly under it\footnote{except the bottom layer}, from the left-node or from the right-node, and every time we go a layer we go up, the layers of this node will have the shortest path to the node beneth them. There is a chance this is not the shortest path but that will adjustet accordentle since we traverse the layer left and right.\\
+Thus every edge is considered exactly once\footnote{except the bottom layer}, the algorithm will have a run-time of m: $ O(m-k)=O(m) $.
+
+\end{document}
+
+
+
+
+

@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{todonotes}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+
+\title{dProgSprog afl 4}
+\author{Hanus Rindom 201303613}
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section*{Exercise 5}
+What happens if your variadic version of append$\_$proper-list is applied to one actual parameter?\\
+Parametren retuneres:
+\begin{verbatim}
+; > (append_proper-list-variadic (list 'a))
+;   (a)
+\end{verbatim}
+
+What happens if your variadic version of append$\_$proper-list is applied to zero actual parameters?\\
+Den tomme liste retuneres:
+\begin{verbatim}
+; > (append_proper-list-variadic )
+;   ()
+\end{verbatim}
+
+What happens if one of the actual parameters of your variadic version of append$\_$proper-list is the empty list?\\
+Den tomme liste retuneres:
+\begin{verbatim}
+; > (append_proper-list-variadic '())
+;   ()
+\end{verbatim}
+
+What happens if one of the actual parameters of your variadic version of append$\_$proper-list is not a proper list?\\
+Der opstår en fejl:
+\begin{verbatim}
+; > (append_proper-list-variadic 42)
+;	Exception in car: 42 is not a pair
+\end{verbatim}
+\section*{Exercise 6}
+
+\begin{verbatim}
+> test-wellformed
+#t
+
+\end{verbatim}
+\end{document}

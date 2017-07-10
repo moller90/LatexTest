@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\title{dADS. Aflevering 2}
+\author{
+	Hanus Ejdesgaard Møller 201303613 \\
+	Andreas Fogh-Pedersen 201303562 \\
+	Christian Høj 201303530
+}
+
+\begin{document}
+\maketitle
+\section{Problem 3-4}
+Versificer eller falsificer f(n) og g(n) som to positive asymptote funktioner.
+	\subsection{A}
+		\[ f(n)=O(g(n)) \; \text{implies} \; g(n)=O(f(n)) \]
+			Vi vil gerne falsificere formodningen ved at definere funktioner hvor formodningen ikke er gældende.\\
+			Hvid det antages at denne formodning er rigtig vil vi kunne falsificere formodningen ved at finde en værdi for $ c $ og $ n_0 $ hvor formodningen ikke gælder.
+				
+		Hvis vi definere $ f(n)=n $ og $ g(n)=n^2 $ vil de forskellige formodninger kunne illustreres således:
+		
+			\[ 0 \; \leq \; n \; \leq \; c*n^2 \text{ implies } 0 \; \leq \; n^2 \; \leq \; c*n \]
+			
+		Hvis c nu defineres til at være en vilkårlig konstant og n er en variable gående om uendelig, vil $ n^2 $ på et eller andet tidspunkt overstige $ c*n $, uanset hvad c er, og derfor er
+		\[ f(n)=O(g(n)) \; \text{implies} \; g(n)=O(f(n)) \]
+		ugyldigt.
+				
+	\subsection{B}
+		\[ f(n)+g(n)=\Theta (g(n)) \: \text{implies} \: \Theta(min(f(n),g(n))) \]
+		\[ h(n)=(min(f(n),g(n)) \]
+		Vi vil gerne falsificere formodningen ved at definere funktioner hvor formodningen ikke er gældende.\\
+		Formodningen kan formuleres således:
+				\[ c_1*h(n) \leq g(n)+f(n) \leq c_2*h(n) \]
+		\[ \text{Da } f(n)=n \text{ og } g(n)=n^2  \text{ kan formodningen udtrykkes således: } \] 
+		\[ c_1*n \leq n+n^2 \leq c_2*n  \]
+			Sætningen er falsk da $ n+n^2 $ på et eller andet tidspunkt overstige $ c_2+n $ for n voksende mod uendelig.
+			
+	\subsection{C}
+        \[ f(n) = O(g(n))  \: \text{implies} \: log(f(n)) = O(log(g(n))) \] For $ log(g(n)) \geq 1 $ og $ f(n) \geq 1 $ for tilpas store n.\\
+            Vi vil gerne verificere denne formodning ved at vise at første halvdel forudsætter anden halvdel af formodningen:
+        \[ f(n) \leq c_1*g(n) \ \: \text{implies} \: \log(f(n)) ) \leq c_2* log(g(n))) \]
+            Logaritmen tages på begge sider af første halvdel af formodningen:
+        \[ log(f(n)) \leq c_2*log(g(n)) \]
+            Logaritmeregneregler anvendes:
+        \[ log(f(n)) \leq log(c_1)+log(g(n)) \]
+            De er nu lig hinanden på nær $ log(c_1) \text{ og } c_2 $ Hvis vi kan få formuleret en sætning der definere hvad konstanten $ c_2 $ skal være, forudsætter første halvdel anden halvdel og formodningen er derved sand.\\
+            Denne del af formodningen; $ log(c_1)+log(g(n)) $ skal være mindre eller lig med denne del af formodningen; $ c_2*log(g(n)) $, for at finde mindsteværdien for $ c_2 $\\
+            Formodningen kan nu formuleres:
+        \[ log(c_1)+log(g(n)) \leq c_2*log(g(n)) \]
+            Der divideres med log(g(n)) på hver side:
+        \[ \frac{log(c_1)}{log(g(n))}+1 \leq c_2 \]
+            Da n er en variabel og $ log(g(n)) > 1 $ skal vi igen omformulere formodningen til:
+        \[ \frac{log(c_1)}{log(g(n))}+1 \leq log(c_1)+1 \leq c_2 \]
+            Det vil sige formodningen 
+        \[ f(n) \leq c_1*g(n) \ \: \text{implies} \: \log(f(n)) ) \leq c_2* log(g(n))) \]
+            er sand så længe $ c_2 \geq log(c_1)+1$
+				
+	\subsection{D}
+		\[ f(n)=O(g(n)) \: \text{implies} \: 2^{f(n)}=O(2^{g(n)}) \]
+		
+		    Vi vil gerne falcificere denne formodning ved at vise at der findes funktioner som ikke forudsætte det påståede.\\
+		        \[ f(n) \leq c*(g(n)) \: \text{implies} \: 2^{f(n)} \leq c*2^{g(n)} \]
+		    Hvis $ f(n) = 2n $ og $ g(n)=n $ fås:
+		        \[ 2n \leq c*n \: \text{implies} \: 2^{2n} \leq c*2^n \]
+		    Ved isolation af c på højre side fås:
+                \[ 2n \leq c*n \text{ implies } 2^n \leq c \]
+            For en vilkårlig konstant c og n gående mod uendelig, vil $ 2^{n} $ efter n er blevet tilpas stor altid overstige en hvilken som helst konstant $ c $ og formodningen er derved falsk.
+		
+	\subsection{E}
+		\[ f(n)=O((f(n))^2) \]
+		Vi vil gerne falsificere formodningen ved at definere funktioner hvor formodningen ikke er gældende.\\
+            \[ f(n) \leq c*((f(n))^2) \]
+            \[ \text{Hvis  } f(n) = n \]
+            \[ \text{c isoleres: } n \leq c*n^2 \Leftrightarrow \frac{1}{n} \leq c\]
+                Hvis $ f(n_0) < 1 $ for n gående mod uendeligt, vil $ f(n) \; < \; f(n)^2 $ og formodningen er derved sand.\\
+            \[ \text{Hvis  } f(n) = \frac{1}{n} \]  
+            \[ \text{c isoleres: } \frac{1}{n} \leq \left( \frac{c}{n^2} \right) \Leftrightarrow n \leq c \]
+        For $ c=1 \text{ og } n_0 = 1  $ vil formodningen ikke passe da n gående mod uendelig vil overstige konstanten c.\\
+        Denne formodning vil være falsk for alle $ f(n) $ med resultatet mellem 0 og 1, og sand for alle reelle tal over 1.
+\end{document}
